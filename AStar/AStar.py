@@ -147,6 +147,7 @@ class AStar:
             base = open_set[len(open_set) - 1]
 
             if base.coord.equal(dest):
+                path.append(base.coord)
                 parentIdx: int = base.parentID
 
                 while parentIdx != -1:

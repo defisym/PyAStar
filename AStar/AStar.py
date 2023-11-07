@@ -204,7 +204,6 @@ class AStar:
                     update_point(neighPoint)
                     open_set.append(neighPoint)
                 elif open_set[nextIdx].cost > neighPoint.cost:
-                    # TODO can here update?
                     update_point(open_set[nextIdx])
 
         return path

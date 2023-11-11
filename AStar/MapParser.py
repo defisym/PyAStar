@@ -13,7 +13,7 @@ class MapParser:
         self.dest = dest
         self.path = path
 
-    def map_parser(self, data: list[str], x: int, y: int):
+    def map_parser(self, data: list[str], x: int, y: int) -> int:
         if y < 0 or y >= len(data):
             return AStar.AStar.obstacle
 
@@ -27,7 +27,7 @@ class MapParser:
 
         return AStar.AStar.path
 
-    def get_point(self, data: list[str]):
+    def get_point(self, data: list[str]) -> [Point.Coord, Point.Coord]:
         start_point = Point.Coord(0, 0)
         dest_point = Point.Coord(0, 0)
 

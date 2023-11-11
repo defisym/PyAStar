@@ -1,4 +1,5 @@
 from operator import attrgetter
+from typing import TypeVar, Callable
 
 from AStar import Point
 
@@ -48,7 +49,7 @@ class AStar:
         return
 
     def set_map(self, width: int, height: int) -> bool:
-        def valid(sz):
+        def valid(sz: int) -> bool:
             if sz <= 0:
                 return False
             return True
@@ -68,10 +69,10 @@ class AStar:
 
         return True
 
-    def get_map_offset(self, x: int, y: int):
+    def get_map_offset(self, x: int, y: int) -> int:
         return y * self.width + x
 
-    def offset_valid(self, offset: int):
+    def offset_valid(self, offset: int) -> bool:
         return 0 <= offset < self.width * self.height
 
     def set_map_data(self, x: int, y: int, cost: int):
@@ -91,7 +92,9 @@ class AStar:
     def map_obstacle(self, x: int, y: int) -> int:
         return self.get_map_data(x, y) == self.obstacle
 
-    def iterate_map(self, cb):
+    # Callback type:
+    # https://docs.python.org/zh-cn/3.10/library/typing.html#callable
+    def iterate_map(self, cb: Callable[[int, int, int], None]):
         """
         callback: std::function<void(int x, int y, int cost)>
         """
@@ -99,7 +102,7 @@ class AStar:
             for x in range(self.width):
                 cb(x, y, self.get_map_data(x, y))
 
-    def update_map(self, cb) -> bool:
+    def update_map(self, cb: Callable[[int, int], int]) -> bool:
         """
         callback: std::function<int(int x, int y)>
         """
@@ -114,11 +117,16 @@ class AStar:
     def get_manhattan_distance(start: Point.Coord, dest: Point.Coord) -> int:
         return abs(start.x - dest.x) + abs(start.y - dest.y)
 
+    # Generic
+    # https://docs.python.org/zh-cn/3.10/library/typing.html#callable
+    T = TypeVar('T')
+
     @staticmethod
-    def find_list(lst, item):
+    def find_list(lst: list[T], item: T) -> int:
         index: int = -1
         for idx in range(len(lst)):
-            if lst[idx].equal(item):
+            # if lst[idx].equal(item):
+            if lst[idx] == item:
                 index = idx
 
         return index

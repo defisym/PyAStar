@@ -131,8 +131,9 @@ class AStar:
 
         return index
 
-    def find(self, start: Point.Coord, dest: Point.Coord, diag: bool, check_corner: bool, heuristic) \
-            -> list[Point.Coord]:
+    def find(self, start: Point.Coord, dest: Point.Coord, diag: bool, check_corner: bool,
+             heuristic: Callable[[Point.Coord, Point.Coord], int | float]) \
+            -> [bool, list[Point.Coord]]:
         """
         heuristic callback: std::function<int(Point::Coord start, Point::Coord dest)>
         """
@@ -143,7 +144,7 @@ class AStar:
         path: list[Point.Coord] = []
 
         if self.map_obstacle(start.x, start.y) or self.map_obstacle(dest.x, dest.y):
-            return path
+            return [False, path]
 
         open_set.append(Point.Point(start))
         neighbour = self.diagonalNeighbour if diag else self.normalNeighbour
@@ -164,7 +165,7 @@ class AStar:
                     parentIdx = parent.parentID
 
                 path.reverse()
-                return path
+                return [True, path]
 
             open_set.pop()
             close_set.append(base)
@@ -215,4 +216,4 @@ class AStar:
                 elif open_set[nextIdx].cost > neighPoint.cost:
                     update_point(open_set[nextIdx])
 
-        return path
+        return [False, path]
